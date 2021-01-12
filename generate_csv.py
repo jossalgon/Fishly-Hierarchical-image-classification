@@ -41,10 +41,4 @@ def read_species():
 species = read_species()
 df = pd.DataFrame.from_dict(species)
 
-train, test = train_test_split(df, test_size=0.2, random_state=42)
-train['is_valid'] = False
-test['is_valid'] = True
-
-train = train.append(test)
-
-train.to_csv(EXPORT_PATH, index=False)
+df.to_csv(EXPORT_PATH, index=False)
