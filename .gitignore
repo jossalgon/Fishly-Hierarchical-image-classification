@@ -3,5 +3,5 @@
 *.png
 *.pkl
 *.pth
-.ipynb_checkpoints/*
+.ipynb_checkpoints
 weights/*
