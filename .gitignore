@@ -5,3 +5,5 @@
 *.pth
 .ipynb_checkpoints
 weights/*
+venv
+.idea
