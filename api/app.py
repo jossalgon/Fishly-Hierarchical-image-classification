@@ -23,7 +23,7 @@ sess.init_app(app)
 
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-sentry = Sentry(app, dsn='XXXXXXXXX')
+sentry = Sentry(app, dsn='https://791bf73d1a68434cb242ab126ef4db96:b0ca421137734105bce2f8c5043fa17c@sentry.io/294114')
 
 def custom_get_y(o):
     fine_label = o['Specie']
@@ -184,10 +184,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
 
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
-
 @app.route('/privacy-policy', methods=['GET'])
 def privacy():
     return render_template('privacy.html')
@@ -198,30 +194,9 @@ def classes():
     return json.dumps(list(learn.dls.vocab))
 
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def predict():
-    predicted, image_id = None, None
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            return redirect(request.url)
-        image_id = str(uuid.uuid1())
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            file_path = os.path.join(UPLOAD_FOLDER, image_id+'.jpg')
-            file.save(file_path)
-            results = get_prediction(file_path, 3)
-            predicted = ', '.join(results)
-            # os.remove(file_path)
-
-        session['image_id'] = image_id
-        session['predicted'] = predicted
-        return redirect(request.url)
-    return render_template('predict.html', predicted=session.get('predicted'), image_id=session.get('image_id'))
+    return render_template('predict.html')
 
 
 @app.route('/uploads/<filename>')
@@ -251,3 +226,4 @@ def api_predict():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
+
